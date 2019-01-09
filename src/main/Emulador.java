@@ -17,7 +17,7 @@ import javax.swing.table.DefaultTableModel;
 
 /**
  *
- * @author aliri
+ * @author alirio
  */
 public class Emulador extends javax.swing.JFrame implements Runnable, KeyListener{
 
@@ -54,11 +54,8 @@ public class Emulador extends javax.swing.JFrame implements Runnable, KeyListene
         
         if(thread == null)
             thread = new Thread(this, "Chip8");
+        
         thread.start();
-        
-        
-        
-
     }
     
     private void printRegistradores(){

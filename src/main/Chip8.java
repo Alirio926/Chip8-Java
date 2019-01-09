@@ -78,7 +78,7 @@ public class Chip8 {
         //LOGGER.log(Level.INFO,"#{0}{1}",new Object[]{Integer.toHexString(memory[512]),Integer.toHexString(memory[513])});
     }
     public void startTimers(){
-        new Thread(()->{
+        new Thread(() -> {
             while(true){
                 if(delay_timer>0)delay_timer--;
                 try{

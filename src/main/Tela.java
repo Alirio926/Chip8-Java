@@ -13,7 +13,7 @@ import javax.swing.JPanel;
 
 /**
  *
- * @author aliri
+ * @author alirio
  */
 public class Tela extends JPanel{
     private static final int W = 64;

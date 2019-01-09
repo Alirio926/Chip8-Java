@@ -10,7 +10,7 @@ import java.awt.event.KeyEvent;
 
 /**
  *
- * @author aliri
+ * @author alirio
  */
 public class Teclado {
     private boolean[] keys;
