@@ -27,6 +27,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JColorChooser;
 import javax.swing.JFileChooser;
 import javax.swing.table.DefaultTableModel;
 
@@ -80,7 +81,7 @@ public class Emulador extends javax.swing.JFrame implements Runnable, KeyListene
     private javax.swing.table.DefaultTableModel tableModel;
     
     long startTime=0, elapsedTime=0, lastTime=0;
-    
+    private Color foregroundColor = Color.YELLOW, backgroundColor= Color.BLACK;
     public Emulador() {
         super();
 	addKeyListener( this );        
@@ -111,11 +112,11 @@ public class Emulador extends javax.swing.JFrame implements Runnable, KeyListene
          for(int x=0;x<W;x++){
             for(int y=0;y<H;y++){
                 if(gfx[x][y] == 1){
-                    graphics.setColor(Color.WHITE);
+                    graphics.setColor(foregroundColor);
                 }else{
-                    graphics.setColor(Color.BLACK);
+                    graphics.setColor(backgroundColor);
                 }
-                graphics.fillRect(x*scale, (y*scale), scale, scale);
+                graphics.fill3DRect(x*scale, (y*scale), scale, scale, true);
             }
         }
         bufferStrategy.show();
@@ -259,6 +260,8 @@ public class Emulador extends javax.swing.JFrame implements Runnable, KeyListene
         jLabel15 = new javax.swing.JLabel();
         jLabel21 = new javax.swing.JLabel();
         lbFreq = new javax.swing.JLabel();
+        fgColor = new javax.swing.JButton();
+        bgColor = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu2 = new javax.swing.JMenu();
         miAbrir = new javax.swing.JMenuItem();
@@ -767,6 +770,20 @@ public class Emulador extends javax.swing.JFrame implements Runnable, KeyListene
 
         lbFreq.setText("00 ms");
 
+        fgColor.setText("Foreground Color");
+        fgColor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fgColorActionPerformed(evt);
+            }
+        });
+
+        bgColor.setText("Background Color");
+        bgColor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bgColorActionPerformed(evt);
+            }
+        });
+
         jMenu2.setText("Rom");
 
         miAbrir.setText("Abrir rom");
@@ -812,25 +829,33 @@ public class Emulador extends javax.swing.JFrame implements Runnable, KeyListene
                     .addGroup(layout.createSequentialGroup()
                         .addGap(9, 9, 9)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jSlider1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel13)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jSlider2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel14)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jSlider1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel13)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 198, Short.MAX_VALUE)
-                                .addComponent(lbFreq, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jSlider2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(0, 0, Short.MAX_VALUE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel14)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(lbFreq, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(fgColor)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(bgColor)
+                                .addGap(0, 0, Short.MAX_VALUE)))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(11, Short.MAX_VALUE))
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -840,15 +865,8 @@ public class Emulador extends javax.swing.JFrame implements Runnable, KeyListene
                     .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 314, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                            .addGap(0, 0, Short.MAX_VALUE)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jLabel13)
-                                        .addComponent(jLabel15))
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(jSlider1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGroup(layout.createSequentialGroup()
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                             .addComponent(jLabel14)
@@ -856,9 +874,19 @@ public class Emulador extends javax.swing.JFrame implements Runnable, KeyListene
                                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                             .addGap(8, 8, 8)
                                             .addComponent(lbFreq)))
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(jSlider2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGap(18, 18, 18)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jSlider2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jLabel13)
+                                        .addComponent(jLabel15))
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(jSlider1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(fgColor)
+                                .addComponent(bgColor))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -934,8 +962,8 @@ public class Emulador extends javax.swing.JFrame implements Runnable, KeyListene
         graphics = bufferStrategy.getDrawGraphics();
          for(int x=0;x<W;x++){
             for(int y=0;y<H;y++){
-                graphics.setColor(Color.WHITE);
-                graphics.fillRect(x*scale, (y*scale), scale, scale);
+                graphics.setColor(foregroundColor);
+                graphics.fill3DRect(x*scale, (y*scale), scale, scale, true);
             }
         }
         bufferStrategy.show();
@@ -948,6 +976,18 @@ public class Emulador extends javax.swing.JFrame implements Runnable, KeyListene
         jLabel21.setText(Integer.toString(jSlider2.getValue()));
         cicle_per_second = jSlider2.getValue();
     }//GEN-LAST:event_jSlider2StateChanged
+
+    private void fgColorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fgColorActionPerformed
+        Color cor = JColorChooser.showDialog(this, "Cor Foreground", foregroundColor);
+        if(cor != null)
+            foregroundColor = cor;
+    }//GEN-LAST:event_fgColorActionPerformed
+
+    private void bgColorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bgColorActionPerformed
+        Color cor = JColorChooser.showDialog(this, "Cor Background", backgroundColor);
+        if(cor != null)
+            backgroundColor = cor;
+    }//GEN-LAST:event_bgColorActionPerformed
     @Override
     public void keyPressed(KeyEvent e) {
         teclado.KeyDown(e);
@@ -1002,10 +1042,12 @@ public class Emulador extends javax.swing.JFrame implements Runnable, KeyListene
     private javax.swing.JTextField V13;
     private javax.swing.JTextField V14;
     private javax.swing.JTextField V15;
+    private javax.swing.JButton bgColor;
     private javax.swing.JButton btnIniciar;
     private javax.swing.JButton btnParar;
     private javax.swing.JButton btnReset;
     private javax.swing.JButton btnStep;
+    private javax.swing.JButton fgColor;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
