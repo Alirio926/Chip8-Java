@@ -52,10 +52,11 @@ public class Chip8 {
     private int kk;
     private int nnn;
     public Teclado teclado;
-    public Tela screen;
+    //public Tela screen;
+    public ScreenCallback screen;
     private int ciclos=0;
     
-    public Chip8(Tela screen, Teclado teclado){
+    public Chip8(ScreenCallback screen, Teclado teclado){
         this.memory = new int[4096];
         this.V = new int[16];
         this.stack =  new int[16];
@@ -68,7 +69,7 @@ public class Chip8 {
         this.teclado = teclado;
         this.screen = screen;
         
-        screen.setDrawFlag(false);
+        screen.setScreenDrawFlag(false);
         System.arraycopy(chip8_fontset, 0, this.memory, 0, chip8_fontset.length);
     }
     public void resetChip8(){
@@ -80,7 +81,7 @@ public class Chip8 {
         this.I = 0;
         this.OpCode = 0;
         this.SP = 0;
-        screen.setDrawFlag(false);
+        screen.setScreenDrawFlag(false);
         System.arraycopy(chip8_fontset, 0, this.memory, 0, chip8_fontset.length);
     }
     public void loadFile(File file) throws FileNotFoundException, IOException{
@@ -199,8 +200,8 @@ public class Chip8 {
     
     // CLS - Clear the display.
     private void instrucao_00E0(){
-        screen.clear();
-        screen.setDrawFlag(true);
+        screen.clearScreen();
+        screen.setScreenDrawFlag(true);
         incProgramCount();
     }
     // RET - Return from a subroutine.
@@ -358,16 +359,16 @@ public class Chip8 {
                     int xCoord = V[Vx]+xLine;
                     int yCoord = V[Vy]+yLine;
                     if(xCoord < 64 && yCoord < 32){
-                        if(screen.getPixel(xCoord, yCoord) == 1){
+                        if(screen.getScreenPixel(xCoord, yCoord) == 1){
                             V[0xf] = 1;
                         }
                     }
-                    screen.setPixel(xCoord, yCoord);
+                    screen.setScreenPixel(xCoord, yCoord);
                 }
             }
         }
         }catch(java.lang.ArrayIndexOutOfBoundsException e){}
-        screen.setDrawFlag(true);
+        screen.setScreenDrawFlag(true);
         incProgramCount();
     }
     // SKP Vx - Skip next instruction if key with the value of Vx is pressed.
